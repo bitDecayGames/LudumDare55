@@ -1,0 +1,50 @@
+package entities.statuseffect;
+
+enum StatusEffect {
+	Slow;
+	Haste;
+	OnFire;
+	Electrified;
+	Blind;
+	Invisible;
+	Slippery;
+	Bleeding;
+	Poisoned;
+	Frozen;
+	Wet;
+	Asleep;
+	Dying;
+	Dead;
+	Spawning;
+	Loud;
+	Quiet;
+	Healing;
+	Confused;
+	Enranged;
+	Dry;
+	Ethereal;
+	Knocked;
+	Swallowed;
+	Hit;
+	Invincible;
+	Talking;
+	Sheep;
+	Fallen;
+	Dazed;
+	Exploaded;
+	Shattered;
+	Idle;
+	Investigating;
+	Patroling;
+	Scared;
+	Following;
+	Squished;
+	DifficultTerrain;
+	Avoiding;
+	Ensnared;
+	OnHolyFire;
+	Static;
+	Panic;
+
+	None;
+}
