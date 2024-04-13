@@ -1,5 +1,6 @@
 package entities.statuseffect;
 
+import flixel.FlxG;
 import entities.statuseffect.StatusEffect;
 import entities.statuseffect.BaseStatusEffect;
 import entities.BaseEntity;
@@ -20,14 +21,17 @@ class StatusEffects {
 				item.onExit();
 				effects.remove(item);
 			}
+			toRemove.clear();
 		}
 		if (toAdd.length > 0) {
 			for (item in toAdd) {
 				if (item.canBeAdded()) {
 					effects.add(item);
+					FlxG.log.add("added item:" + item);
 					item.onEnter();
 				}
 			}
+			toAdd.clear();
 		}
 		
 		for (item in effects) {
@@ -37,6 +41,7 @@ class StatusEffects {
 
 	public function add(e:BaseStatusEffect) {
 		toAdd.add(e);
+		FlxG.log.add("attempt to added item:" + e);
 	}
 
 	public function remove(e:BaseStatusEffect) {
@@ -66,5 +71,9 @@ class StatusEffects {
 			}
 		}
 		return false;
+	}
+
+	public function toString():String {
+		return '(${effects.length})[${effects.join(",")}]';
 	}
 }

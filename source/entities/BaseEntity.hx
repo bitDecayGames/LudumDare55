@@ -36,7 +36,7 @@ class BaseEntity extends FlxSprite {
 	public var friction:Float = 1.0;
 	public var sturdiness:Float = 1.0;
 
-	public var stateMachine: StateMachine;
+	public var stateMachine: StateMachine<BaseEntity>;
 	public var effects: StatusEffects;
 	public var resistance:Resistances;
 	public var damage:DamageTracker;
@@ -49,29 +49,13 @@ class BaseEntity extends FlxSprite {
 		resistance = new Resistances();
 		damage = new DamageTracker();
 		velocity = FlxPoint.get();
-
-		// need to call this from the child classes
-		// init(AssetPaths.player__json);
-	}
-
-	private function init(data:String) {
 		health = maxHealth;
-
-		// This call can be used once https://github.com/HaxeFlixel/flixel/pull/2860 is merged
-		// FlxAsepriteUtil.loadAseAtlasAndTags(this, AssetPaths.player__png, AssetPaths.player__json);
-		Aseprite.loadAllAnimations(this, data);
-		animation.play(anims.right);
-		animation.callback = (anim, frame, index) -> {
-			if (eventData.exists(index)) {
-				trace('frame $index has data ${eventData.get(index)}');
-			}
-		};
-
 	}
 
 	override public function update(delta:Float) {
 		super.update(delta);
 		stateMachine.update(delta);
 		effects.update(delta);
+		damage.update(delta);
 	}
 }

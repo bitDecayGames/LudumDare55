@@ -44,4 +44,12 @@ class BaseStatusEffect {
 
 	public function onExit() {
 	}
+
+	public function toString():String {
+		var p = Type.getClassName(Type.getClass(this)).split(".");
+		if (p.length > 0) {
+			return p[p.length - 1].substr(0, 3);
+		}
+		return "?";
+	}
 }

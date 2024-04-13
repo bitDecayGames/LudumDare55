@@ -1,5 +1,7 @@
 package states;
 
+import entities.SummonerClock;
+import entities.BaseEntity;
 import entities.Item;
 import flixel.util.FlxColor;
 import debug.DebugLayers;
@@ -14,7 +16,8 @@ import bitdecay.flixel.debug.DebugDraw;
 using states.FlxStateExt;
 
 class PlayState extends FlxTransitionableState {
-	var player:FlxSprite;
+	var player:BaseEntity;
+	var clock:SummonerClock;
 
 	override public function create() {
 		super.create();
@@ -22,7 +25,10 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.camera.pixelPerfectRender = true;
 
-		player = new Player();
+		clock = new SummonerClock(250, 100);
+		add(clock);
+
+		player = new Player(clock);
 		add(player);
 
 		var item = new Item();
