@@ -9,7 +9,6 @@ class StatusEffects {
 	public var effects = new List<BaseStatusEffect>();
 	public var toAdd = new List<BaseStatusEffect>();
 	public var toRemove = new List<BaseStatusEffect>();
-	public var toRemoveByType = new List<StatusEffect>();
 
 	public function new(self:BaseEntity) {
 		this.self = self;
@@ -20,17 +19,6 @@ class StatusEffects {
 			for (item in toRemove) {
 				item.onExit();
 				effects.remove(item);
-			}
-		}
-		if (toRemoveByType.length > 0) {
-			for (item in toRemoveByType) {
-				effects = effects.filter((e) -> {
-					if (e.type == item) {
-						e.onExit();
-						return false;
-					}
-					return true;
-				});
 			}
 		}
 		if (toAdd.length > 0) {
@@ -56,7 +44,19 @@ class StatusEffects {
 	}
 
 	public function removeByType(s:StatusEffect) {
-		toRemoveByType.add(s);
+		for (item in effects) {
+			if (item.type == s) {
+				remove(item);
+			}
+		}
+	}
+
+	public function removeByOwner(ownerId:Int) {
+		for (item in effects) {
+			if (item.ownerId == ownerId) {
+				remove(item);
+			}
+		}
 	}
 
 	public function has(s:StatusEffect):Bool {

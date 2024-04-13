@@ -4,11 +4,11 @@ import entities.BaseEntity;
 import entities.statuseffect.StatusEffect;
 
 class SlowStatusEffect extends BaseStatusEffect {
-	public var potency:Float = 0.8;
 
-	public function new(self:BaseEntity, potency:Float = 0.8, lifespan:Float = 1.0) {
-		super(self, lifespan);
+	public function new(self:BaseEntity, potency:Float = 0.8, lifespan:Float = 1.0, ownerId:Int = -1) {
+		super(self, lifespan, ownerId);
 		type = StatusEffect.Slow;
+		this.potency = potency;
 	}
 
 	override public function onEnter() {

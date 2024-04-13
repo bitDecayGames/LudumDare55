@@ -23,10 +23,10 @@ enum StatusEffect {
 	Enranged;
 	Dry;
 	Ethereal;
-	Knocked;
+	Pushed;
 	Swallowed;
 	Hit;
-	Invincible;
+	Impervious;
 	Talking;
 	Sheep;
 	Fallen;
