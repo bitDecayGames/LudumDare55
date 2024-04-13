@@ -22,6 +22,9 @@ import bitdecay.flixel.debug.DebugDraw;
 #if play
 import states.PlayState;
 #end
+#if dev
+import states.debug.DebugState;
+#end
 #if credits
 import states.CreditsState;
 #end
@@ -37,6 +40,8 @@ class Main extends Sprite {
 		var startingState:Class<FlxState> = SplashScreenState;
 		#if play
 		startingState = PlayState;
+		#elseif dev
+		startingState = DebugState;
 		#elseif credits
 		startingState = CreditsState;
 		#else
