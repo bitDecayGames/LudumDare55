@@ -7,7 +7,11 @@ class ShatteredStatusEffect extends BaseStatusEffect {
 
 	public function new(self:BaseEntity) {
 		super(self, 0);
-		type = StatusEffect.Exploaded;
+		type = StatusEffect.Shattered;
+	}
+
+	override function canBeAdded():Bool {
+		return self.effects.has(StatusEffect.Frozen);
 	}
 
 	override public function onEnter() {
@@ -17,5 +21,6 @@ class ShatteredStatusEffect extends BaseStatusEffect {
 		// a shattered sprite is created and a few pieces of ice are left where you were
 		// and you cannot be seen anymore
 		self.visible = false;
+		// TODO: spawn shattering animation
 	}
 }

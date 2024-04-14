@@ -9,7 +9,7 @@ class SlipperyAreaEffect extends AreaEffect {
 
 	override function onEnter(entity:BaseEntity) {
 		super.onEnter(entity);
-		entity.effects.add(new SlipperyStatusEffect(entity, potency, id));
+		new SlipperyStatusEffect(entity, potency, id);
 	}
 
 	override function onExit(entity:BaseEntity) {

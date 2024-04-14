@@ -19,7 +19,7 @@ class AreaBlast extends FlxSprite {
 
 	public function hit(entities:List<BaseEntity>) {
 		for (entity in entities) {
-			entity.effects.add(new HitStatusEffect(entity, potency, damageType));
+			new HitStatusEffect(entity, potency, damageType);
 		}
 		kill();
 	}

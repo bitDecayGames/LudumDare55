@@ -19,7 +19,7 @@ class Projectile extends FlxSprite {
 	}
 
 	public function hit(entity:BaseEntity) {
-		entity.effects.add(new HitStatusEffect(entity, potency, damageType));
+		new HitStatusEffect(entity, potency, damageType);
 		hits--;
 		if (hits <= 0) {
 			kill();
