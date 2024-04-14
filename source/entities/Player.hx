@@ -1,13 +1,9 @@
 package entities;
 
-import entities.statuseffect.HasteStatusEffect;
 import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.FlxG;
 import entities.statemachine.DefaultPlayerState;
-import flixel.FlxSprite;
 
-import input.InputCalcuator;
-import input.SimpleController;
 import loaders.Aseprite;
 import loaders.AsepriteMacros;
 

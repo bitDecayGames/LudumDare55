@@ -1,7 +1,7 @@
 package entities.statemachine;
 
 import entities.statuseffect.ConfusedStatusEffect;
-import input.SimpleController;
+import input.FullController;
 import input.InputCalcuator;
 import entities.Player;
 
@@ -19,7 +19,7 @@ class DefaultPlayerState extends BaseState<Player> {
 			self.velocity.set();
 		}
 
-		if (SimpleController.pressed(Button.A, self.playerNum)) {
+		if (FullController.pressed(Button.LEFT_BUMPER, self.playerNum) || FullController.pressed(Button.RIGHT_BUMPER, self.playerNum)) {
 			return cast new ClockState(self);
 		}
 

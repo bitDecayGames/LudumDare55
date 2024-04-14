@@ -1,26 +1,43 @@
 package entities;
 
+import flixel.FlxG;
+import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import entities.statuseffect.HasteStatusEffect;
-import flixel.system.debug.watch.Tracker.TrackerProfile;
-import flixel.FlxG;
-import entities.statemachine.DefaultPlayerState;
 import elements.Element;
 import flixel.FlxSprite;
 
-import input.InputCalcuator;
-import input.SimpleController;
 import loaders.Aseprite;
 import loaders.AsepriteMacros;
 
-class SummonerClock extends FlxSprite {
-	public static var anims = AsepriteMacros.tagNames("assets/aseprite/characters/player.json");
-	public static var layers = AsepriteMacros.layerNames("assets/aseprite/characters/player.json");
-	public static var eventData = AsepriteMacros.frameUserData("assets/aseprite/characters/player.json", "Layer 1");
+class SummonerClock extends FlxSpriteGroup {
+
+	public static var elementOrderList = [
+		Element.Fire,
+		Element.Water,
+		Element.Earth,
+		Element.Wind,
+		Element.Ice,
+		Element.Metal,
+		Element.Electricity,
+		Element.Shadow,
+		Element.Light,
+		Element.Life,
+	];
+
+	private var elementAccess = new Map<Element, Bool>();
+
+	public var clockSprite:FlxSprite;
 
 	public var primary:Element = Element.None;
+	public var primaryAngle:Float = 0.0;
+	public var primarySprite:FlxSprite;
+
 	public var secondary:Element = Element.None;
+	public var secondaryAngle:Float = 0.0;
+	public var secondarySprite:FlxSprite;
+
+	public var gems:Map<Element, ClockGem> = new Map<Element, ClockGem>();
 
 	private var animDur:Float = 0.15;
 	private var animYOffset:Float = -10;
@@ -34,16 +51,36 @@ class SummonerClock extends FlxSprite {
 		y = originalY - animYOffset;
 		alpha = 0;
 
-		// This call can be used once https://github.com/HaxeFlixel/flixel/pull/2860 is merged
-		// FlxAsepriteUtil.loadAseAtlasAndTags(this, AssetPaths.player__png, AssetPaths.player__json);
-		Aseprite.loadAllAnimations(this, AssetPaths.player__json);
-		animation.play(anims.right);
-		animation.callback = (anim, frame, index) -> {
-			if (eventData.exists(index)) {
-				trace('frame $index has data ${eventData.get(index)}');
-			}
-		};
-		FlxG.watch.add(this, "timer");
+		clockSprite = new FlxSprite(0, 0, AssetPaths.clock__png);
+		add(clockSprite);
+		primarySprite = new FlxSprite(0, 0, AssetPaths.primary_hand__png);
+		add(primarySprite);
+		secondarySprite = new FlxSprite(0, 0, AssetPaths.secondary_hand__png);
+		add(secondarySprite);
+
+		for (i in 0...elementOrderList.length) {
+			var element = elementOrderList[i];
+			var x = 0 + (i * 10);
+			var y = 0;
+			var glow = new ClockGemGlow(x, y);
+			glow.visible = false;
+			add(glow);
+			var gem = new ClockGem(x, y, glow);
+			gem.visible = false;
+			add(gem);
+			gems.set(element, gem);
+		}
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		FlxG.watch.add(this, "primary");
+		FlxG.watch.add(this, "secondary");
+
+		primarySprite.angle = primaryAngle;
+		secondarySprite.angle = secondaryAngle;
+
 	}
 
 	public function show() {
@@ -54,10 +91,12 @@ class SummonerClock extends FlxSprite {
 			colorTween.cancel();
 		}
 		tween = FlxTween.tween(this, {y: originalY}, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn});
-		function tweenFunction(s:FlxSprite, v:Float) {
-			s.alpha = v;
-		}
 		colorTween = FlxTween.num(0, 1, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn}, tweenFunction.bind(this));
+
+		for (gem in gems) {
+			gem.glow.visible = false;
+			gem.glow.alpha = 0.0;
+		}
 	}
 
 	public function hide() {
@@ -68,13 +107,70 @@ class SummonerClock extends FlxSprite {
 			colorTween.cancel();
 		}
 		tween = FlxTween.tween(this, {y: originalY-animYOffset}, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn});
-		function tweenFunction(s:FlxSprite, v:Float) {
-			s.alpha = v;
-		}
 		colorTween = FlxTween.num(1, 0, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn}, tweenFunction.bind(this));
 	}
 
-	override function update(elapsed:Float) {
-		super.update(elapsed);
+	function tweenFunction(s:FlxSprite, v:Float) {
+		s.alpha = v;
+	}
+	
+	public function addElement(element:Element) {
+		elementAccess.set(element, true);
+
+		if (gems.exists(element)) {
+			gems.get(element).visible = true;
+		}
+	}
+
+	public function hasElement(element:Element):Bool {
+		return elementAccess.exists(element) && elementAccess.get(element);
+	}
+
+	// getElement takes an angle that is relative to the normalized UP vector (0, -1)
+	public function getElement(angle:Float):Element {
+		// normalize the angle to the slightly offset rotation of the clock (counter clockwize 18 degrees)
+		var index = getIndex(angle);
+		var element = elementOrderList[index];
+		if (!hasElement(element)) {
+			return Element.None;
+		}
+		return element;
+	}
+
+	public function getIndex(angle:Float):Int {
+		if (angle < 0) {
+			angle += 360;
+		}
+		return Math.floor(((angle + (360.0 / elementOrderList.length * 0.5)) % 360.0) / (360.0 / elementOrderList.length));
+	}
+
+	public function getNextElement(e:Element):Element {
+		var index = -1;
+		for (i in 0...elementOrderList.length) {
+			if (elementOrderList[i] == e) {
+				index = i;
+				break;
+			}
+		}
+		if (index == -1) {
+			return None;
+		}
+		var foundIndex = index;
+		var elem = e;
+		index++;
+		while(elem != e && foundIndex != index) {
+			if (index >= elementOrderList.length) {
+				index = 0;
+			} else {
+				var possible = elementOrderList[index];
+				if (hasElement(possible)) {
+					return possible;
+				}
+				index++;
+			}
+		} 
+
+		return e;
 	}
 }
+

@@ -1,6 +1,6 @@
 package input;
 
-import input.SimpleController.Button;
+import input.FullController.Button;
 import flixel.math.FlxPoint;
 import bitdecay.flixel.spacial.Cardinal;
 
@@ -17,19 +17,19 @@ class InputCalcuator {
 	public static function getInputCardinal(player:Int = 0):Cardinal {
 		temp.set();
 
-		if (SimpleController.pressed(Button.UP, player)) {
+		if (FullController.pressed(Button.UP, player)) {
 			temp.add(0, -1);
 		}
 
-		if (SimpleController.pressed(Button.DOWN, player)) {
+		if (FullController.pressed(Button.DOWN, player)) {
 			temp.add(0, 1);
 		}
 
-		if (SimpleController.pressed(Button.LEFT, player)) {
+		if (FullController.pressed(Button.LEFT, player)) {
 			temp.add(-1, 0);
 		}
 
-		if (SimpleController.pressed(Button.RIGHT, player)) {
+		if (FullController.pressed(Button.RIGHT, player)) {
 			temp.add(1, 0);
 		}
 
