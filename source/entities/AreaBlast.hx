@@ -5,7 +5,7 @@ import flixel.math.FlxPoint;
 import flixel.FlxSprite;
 import elements.Element;
 
-class AreaBlast extends FlxSprite {
+class AreaBlast extends CenterableEntity {
 	public var damageType:Element = Element.None;
 	public var potency:Float = 1.0;
 	public var radius:Float = 1.0;

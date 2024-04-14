@@ -1,5 +1,6 @@
 package states;
 
+import flixel.group.FlxSpriteGroup;
 import entities.SummonerClock;
 import entities.BaseEntity;
 import entities.Item;
@@ -18,6 +19,7 @@ using states.FlxStateExt;
 class PlayState extends FlxTransitionableState {
 	var player:BaseEntity;
 	var clock:SummonerClock;
+	var projectileGroup:FlxSpriteGroup;
 
 	override public function create() {
 		super.create();
@@ -25,15 +27,17 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.camera.pixelPerfectRender = true;
 
+		projectileGroup = new FlxSpriteGroup();
 		clock = new SummonerClock(250, 100);
+		player = new Player(200, 200, clock, projectileGroup);
+		 
 		add(clock);
-
-		player = new Player(clock);
 		add(player);
+		add(projectileGroup);
 
 		//add(Achievements.ACHIEVEMENT_NAME_HERE.toToast(true, true));
 
-		// QuickLog.error('Example error');
+		QuickLog.error('Example error');
 		FlxG.camera.bgColor = FlxColor.CYAN;
 	}
 

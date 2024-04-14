@@ -106,7 +106,7 @@ class FullController {
 		return gamepad.anyJustReleased(gamepadButtonBindings[button]);
 	}
 
-	static function analog(analog:Analog, player:Int):Float {
+	public static function analog(analog:Analog, player:Int):Float {
 		var gamepad = getGamepad(player);
 		if (gamepad == null)
 			return 0.0;

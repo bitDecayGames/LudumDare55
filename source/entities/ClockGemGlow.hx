@@ -6,7 +6,7 @@ import loaders.Aseprite;
 import loaders.AsepriteMacros;
 import flixel.FlxSprite;
 
-class ClockGemGlow extends FlxSprite {
+class ClockGemGlow extends CenterableEntity {
 	private var showTween:FlxTween;
 	private var hideTween:FlxTween;
 	private var animDur:Float = 0.2;

@@ -9,14 +9,13 @@ class FireballProjectile extends Projectile {
 
 	public function new(group:FlxSpriteGroup, x:Float, y:Float, velocity:FlxPoint) {
 		super(group, x, y, velocity, FireballAttack.POTENCY, Element.Fire, 1, FireballAttack.LIFESPAN);
-	}
-
-	override function hit(entity:BaseEntity) {
-		kill();
+		loadGraphic(AssetPaths.fireball__png);
 	}
 
 	override function kill() {
+		trace("fireball is dead, spawning blast");
 		super.kill();
-		group.add(new FireballBlast(x, y, FireballAttack.RADIUS, potency));
+		var c = center();
+		group.add(new FireballBlast(c.x, c.y, FireballAttack.RADIUS, potency));
 	}
 }

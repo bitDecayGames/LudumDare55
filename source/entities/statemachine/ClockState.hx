@@ -78,11 +78,12 @@ class ClockState extends BaseState<Player> {
 	override function onExit(next:BaseState<BaseEntity>):BaseState<BaseEntity> {
 		self.clock.hide();
 		if (primaryIndex < 0) {
-			self.clock.primary = Element.Bleed;
+			self.clock.primary = Element.None;
 		}
 		if (secondaryIndex < 0) {
-			self.clock.secondary = Element.Poison;
+			self.clock.secondary = Element.None;
 		}
+		self.currentAttack = self.attacks.get(self.clock.primary, self.clock.secondary);
 		return null;
 	}
 }

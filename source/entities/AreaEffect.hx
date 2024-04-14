@@ -2,7 +2,7 @@ package entities;
 
 import flixel.FlxSprite;
 
-class AreaEffect extends FlxSprite {
+class AreaEffect extends CenterableEntity {
 	public var id:Int = -1;
 	public var radius:Float = 1.0;
 	public var potency:Float = 1.0;
