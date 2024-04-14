@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxEase;
@@ -70,6 +71,8 @@ class SummonerClock extends FlxSpriteGroup {
 			add(gem);
 			gems.set(element, gem);
 		}
+
+		this.scale.set(2, 2);
 	}
 
 	override function update(elapsed:Float) {
