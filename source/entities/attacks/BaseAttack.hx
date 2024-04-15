@@ -1,5 +1,6 @@
 package entities.attacks;
 
+import flixel.math.FlxRandom;
 import flixel.group.FlxSpriteGroup;
 import entities.statuseffect.HitStatusEffect;
 import flixel.math.FlxPoint;
@@ -18,6 +19,7 @@ class BaseAttack {
 	public var cooldown:Float = 1.0;
 	private var _cooldown:Float = 0.0;
 	public var started:Bool = false;
+	public var rnd:FlxRandom;
 
 	public function new(group:FlxSpriteGroup, potency:Float, damageType:Element, cooldown:Float, chargeTime:Float = 0.01) {
 		this.group = group;
@@ -27,6 +29,7 @@ class BaseAttack {
 		this.chargeTime = chargeTime;
 		attackOrigin = FlxPoint.get();
 		attackDirection = FlxPoint.get();
+		rnd = new FlxRandom();
 	}
 
 	public function trigger(x:Float, y:Float, direction:FlxPoint) {

@@ -38,10 +38,18 @@ class DefaultPlayerState extends BaseState<Player> {
 
 		// Attack
 		if (FullController.pressed(Button.A, self.playerNum) || FullController.analog(Analog.RIGHT_TRIGGER, self.playerNum) >= .8 || FullController.analog(Analog.LEFT_TRIGGER, self.playerNum) >= .8) {
-			if (self.currentAttack != null && self.currentAttack.ready) {
+			if (self.currentAttack != null) {
 				var center = self.center();
-				self.currentAttack.trigger(center.x, center.y, FlxPoint.get(1, 0).rotateByDegrees(self.facingDegrees));
+				var dir = FlxPoint.get(1, 0).rotateByDegrees(self.facingDegrees);
+				if (self.currentAttack.started) {
+					self.currentAttack.attackOrigin.set(center.x, center.y);
+					self.currentAttack.attackDirection = dir;
+				} else if (self.currentAttack.ready) {
+					self.currentAttack.trigger(center.x, center.y, dir);
+				}
 			}
+		} else if (self.currentAttack != null && self.currentAttack.started) {
+			self.currentAttack.stop();
 		}
 
 		// Turning
@@ -67,6 +75,9 @@ class DefaultPlayerState extends BaseState<Player> {
 
 	override function onExit(next:BaseState<BaseEntity>):BaseState<BaseEntity> {
 		self.move(FlxPoint.get(0, 0));
+		if (self.currentAttack != null && self.currentAttack.started) {
+			self.currentAttack.stop();
+		}
 		return super.onExit(next);
 	}
 }

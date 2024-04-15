@@ -1,9 +1,6 @@
 package entities.attacks;
 
 import flixel.group.FlxSpriteGroup;
-import entities.statuseffect.HitStatusEffect;
-import flixel.math.FlxPoint;
-import flixel.FlxSprite;
 import elements.Element;
 
 class ContinuousAttack extends BaseAttack {
@@ -12,4 +9,14 @@ class ContinuousAttack extends BaseAttack {
 		super(group, potency, damageType, cooldown);
 	}
 
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+		if (started) {
+			spawn();
+		}
+	}
+
+	public function spawn() {
+
+	}
 }
