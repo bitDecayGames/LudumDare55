@@ -29,7 +29,7 @@ class HitStatusEffect extends BaseStatusEffect {
 		super.onEnter();
 		// TODO: tint sprite red
 		var netDamage = potency * self.resistance.get(damageType);
-		self.health -= netDamage;
+		self.hurt(netDamage);
 
 		var totalDamage = self.damage.add(damageType, netDamage);
 

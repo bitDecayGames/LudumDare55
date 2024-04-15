@@ -73,7 +73,10 @@ class PlayState extends FlxTransitionableState {
 		FlxG.collide(projectileGroup, enemyGroup, (projectile, enemy) -> {
 			collideProjectileToEnemy(cast projectile, cast enemy);
 		});
-		FlxG.collide(projectileGroup, player, (projectile, player) -> {
+		FlxG.collide(enemyGroup, player, (enemy, player) -> {
+			collideEnemyToPlayer(cast enemy, cast player);
+		});
+		FlxG.collide(enemyProjectileGroup, player, (projectile, player) -> {
 			collideProjectileToPlayer(cast projectile, cast player);
 		});
 
@@ -85,6 +88,10 @@ class PlayState extends FlxTransitionableState {
 	
 	public function collideProjectileToPlayer(p:Projectile, player:Player) {
 		p.hit(player);
+	}
+	
+	public function collideEnemyToPlayer(e:BaseEnemy, player:Player) {
+		//player.hurt(1);
 	}
 
 	override public function onFocusLost() {
