@@ -16,6 +16,7 @@ class AttackPicker {
 			],
 			Fire => [
 				Fire => new FireballAttack(group),
+				Wind => new FireTornadoAttack(group),
 			],
 		];
 		
