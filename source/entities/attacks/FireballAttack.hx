@@ -7,7 +7,7 @@ import elements.Element;
 
 class FireballAttack extends SingleAttack {
 	public static var SPEED = 150.0;
-	public static var COOLDOWN = 2.0;
+	public static var COOLDOWN = 0.5;
 	public static var POTENCY = 30.0;
 	public static var RADIUS = 30.0;
 	public static var LIFESPAN = 1.5;

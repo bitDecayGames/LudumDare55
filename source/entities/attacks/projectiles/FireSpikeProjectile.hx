@@ -8,7 +8,7 @@ import elements.Element;
 class FireSpikeProjectile extends Projectile {
 
 	public function new(group:FlxSpriteGroup, x:Float, y:Float, velocity:FlxPoint) {
-		super(group, x, y, velocity, FireballAttack.POTENCY, Element.Fire, 1, FireballAttack.LIFESPAN);
+		super(group, x, y, velocity, FireballAttack.POTENCY, Element.Fire, 5, FireballAttack.LIFESPAN);
 		loadGraphic(AssetPaths.firespike__png);
 	}
 }

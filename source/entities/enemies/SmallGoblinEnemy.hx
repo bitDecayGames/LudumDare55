@@ -15,7 +15,7 @@ class SmallGoblinEnemy extends BaseEnemy {
 		naturalSpeed = speed;
 		friction = 1000;
 		sturdiness = 10;
-		vision = 300;
+		vision = 800;
 
 		loadGraphic(AssetPaths.small_goblin__png);
 

@@ -1,5 +1,6 @@
 package states;
 
+import flixel.math.FlxRandom;
 import entities.Projectile;
 import entities.BaseEnemy;
 import entities.enemies.SmallGoblinEnemy;
@@ -26,6 +27,9 @@ class PlayState extends FlxTransitionableState {
 	var projectileGroup:FlxSpriteGroup;
 	var enemyProjectileGroup:FlxSpriteGroup;
 	var enemyGroup:FlxSpriteGroup;
+	var rnd:FlxRandom;
+	var t:Float = 0;
+	var spawnTime:Float = 1;
 
 	override public function create() {
 		super.create();
@@ -33,6 +37,7 @@ class PlayState extends FlxTransitionableState {
 		Lifecycle.startup.dispatch();
 
 		FlxG.camera.pixelPerfectRender = true;
+		rnd = new FlxRandom();
 
 		projectileGroup = new FlxSpriteGroup();
 		enemyProjectileGroup = new FlxSpriteGroup();
@@ -44,8 +49,8 @@ class PlayState extends FlxTransitionableState {
 			clock.addElement(element);
 		}
 
-		var x = 100;
-		var y = 200;
+		var x = 200;
+		var y = 50;
 		for (i in 0...10) {
 			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y, player, enemyProjectileGroup, enemyGroup));
 			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y + 30, player, enemyProjectileGroup, enemyGroup));
@@ -79,6 +84,17 @@ class PlayState extends FlxTransitionableState {
 		FlxG.collide(enemyProjectileGroup, player, (projectile, player) -> {
 			collideProjectileToPlayer(cast projectile, cast player);
 		});
+
+		t -= elapsed;
+		if (t < 0) {
+			t = spawnTime;
+			spawnOffscreen();
+		}
+
+	}
+
+	public function spawnOffscreen() {
+		enemyGroup.add(new SmallGoblinEnemy(rnd.float(0, FlxG.width), 0, player, enemyProjectileGroup, enemyGroup)); 
 
 	}
 

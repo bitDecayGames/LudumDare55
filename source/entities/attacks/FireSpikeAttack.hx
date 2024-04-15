@@ -7,7 +7,7 @@ import elements.Element;
 
 class FireSpikeAttack extends SingleAttack {
 	public static var SPEED = 300.0;
-	public static var COOLDOWN = 3.0;
+	public static var COOLDOWN = 0.5;
 	public static var POTENCY = 50.0;
 	public static var RADIUS = 25.0;
 	public static var LIFESPAN = 1.0;
