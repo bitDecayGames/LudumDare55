@@ -3,13 +3,12 @@ package entities.statemachine;
 import flixel.math.FlxPoint;
 import shaders.OutlineShader;
 
-class DefaultEnemyState extends BaseState<BaseEnemy> {
+class AttackState extends BaseState<BaseEnemy> {
 	public function new(self:BaseEnemy) {
 		super(self);
 	}
 
 	override function update(delta:Float):BaseState<BaseEntity> {
-
 		return null;
 	}
 

@@ -1,5 +1,7 @@
 package entities;
 
+import flixel.math.FlxRandom;
+import flixel.FlxG;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import elements.DamageTracker;
 import elements.Resistances;
@@ -41,6 +43,10 @@ class BaseEntity extends CenterableEntity {
 	public var canBeDamaged:Bool = true;
 	public var friction:Float = .9;
 	public var sturdiness:Float = 1.0;
+	public var z:Float = 0.0;
+	private var zRandomStart:Int;
+	public var rnd:FlxRandom;
+
 
 	public var stateMachine: StateMachine<BaseEntity>;
 	public var effects: StatusEffects;
@@ -57,6 +63,8 @@ class BaseEntity extends CenterableEntity {
 		damage = new DamageTracker();
 		velocity = FlxPoint.get();
 		health = maxHealth;
+		rnd = new FlxRandom();
+		zRandomStart = rnd.int(0, 1000);
 	}
 
 	override public function update(delta:Float) {
@@ -68,7 +76,6 @@ class BaseEntity extends CenterableEntity {
 		// Turning
 		facingDegrees += getFacingDifference() * turnSpeed * delta;
 		facingDegrees %= 360;
-		angle = facingDegrees;
 
 		// Movement
 		if (speed > maxSpeed) {
@@ -79,6 +86,13 @@ class BaseEntity extends CenterableEntity {
 			speed += (naturalSpeed - speed) * 0.1; 
 		}
 		drag.set(friction, friction);
+
+		// Movement Animation
+		// var sin = Math.sin((FlxG.game.ticks + zRandomStart) * 0.02);
+		// z = sin * velocity.length * 0.05;
+		// offset.set(0, z);
+		// angle = sin * velocity.length * 0.1;
+
 	}
 
 	private function getFacingDifference():Float {

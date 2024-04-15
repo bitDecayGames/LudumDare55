@@ -26,6 +26,7 @@ class PlayState extends FlxTransitionableState {
 
 	override public function create() {
 		super.create();
+		DebugDraw.init(Type.allEnums(DebugLayers));
 		Lifecycle.startup.dispatch();
 
 		FlxG.camera.pixelPerfectRender = true;
@@ -41,16 +42,13 @@ class PlayState extends FlxTransitionableState {
 
 		var x = 100;
 		var y = 200;
-		for (i in 0...10) {
-			add(new SmallGoblinEnemy(x + i * 30, y, player, projectileGroup));
+		for (i in 0...30) {
+			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y, player, projectileGroup, enemyGroup));
 		}
 		 
 		add(player);
-
 		add(enemyGroup);
-
 		add(projectileGroup);
-
 		add(clock);
 
 		//add(Achievements.ACHIEVEMENT_NAME_HERE.toToast(true, true));
