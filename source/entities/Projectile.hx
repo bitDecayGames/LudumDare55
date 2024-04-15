@@ -14,6 +14,7 @@ class Projectile extends CenterableEntity {
 	public var potency:Float = 1.0;
 	public var hits:Int = 1;
 	public var lifespan:Float = 2.0;
+	public var rotateTowardsDirection:Bool = true;
 
 	public function new(group:FlxSpriteGroup, x:Float, y:Float, velocity:FlxPoint, potency:Float, damageType:Element, hits:Int = 1, lifespan:Float = 2.0) {
 		super(x, y);
@@ -47,7 +48,7 @@ class Projectile extends CenterableEntity {
 		if (lifespan < 0) {
 			kill();
 		}
-		if (velocity.length > 0) {
+		if (rotateTowardsDirection && velocity.length > 0) {
 			angle = velocity.degrees;
 		}
 	}
