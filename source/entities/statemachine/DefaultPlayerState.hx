@@ -5,6 +5,7 @@ import entities.statuseffect.ConfusedStatusEffect;
 import input.FullController;
 import input.InputCalcuator;
 import entities.Player;
+import shaders.OutlineShader;
 
 class DefaultPlayerState extends BaseState<Player> {
 	public function new(self:Player) {
@@ -51,6 +52,21 @@ class DefaultPlayerState extends BaseState<Player> {
 			}
 		}
 
+		// Shader debug
+		if (FullController.justPressed(Button.X, self.playerNum)) {
+			var shader = cast(self.shader, OutlineShader);
+			shader.setEnabled(!shader.getEnabled());
+		}
+		if (FullController.justPressed(Button.Y, self.playerNum)) {
+			var shader = cast(self.shader, OutlineShader);
+			shader.setSize(shader.getWidth() + 1, shader.getHeight() + 1);
+		}
+
 		return null;
+	}
+
+	override function onExit(next:BaseState<BaseEntity>):BaseState<BaseEntity> {
+		self.move(FlxPoint.get(0, 0));
+		return super.onExit(next);
 	}
 }

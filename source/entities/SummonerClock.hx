@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.group.FlxSpriteGroup;
@@ -26,17 +27,56 @@ class SummonerClock extends FlxSpriteGroup {
 		Element.Life,
 	];
 
+	private static var elementOffset = [
+		1.0, // Element.Fire,
+		0.95, // Element.Water,
+		1.0, // Element.Earth,
+		0.95, // Element.Wind,
+		0.81, // Element.Ice,
+		0.81, // Element.Metal,
+		0.81, // Element.Electricity,
+		0.81, // Element.Shadow,
+		1.0, // Element.Light,
+		1.0, // Element.Life,
+	];
+
+	private static var elementColor = [
+		0xff0000, // Element.Fire,
+		0x0000ff, // Element.Water,
+		0x00ff00, // Element.Earth,
+		0xffffff, // Element.Wind,
+		0x0088dd, // Element.Ice,
+		0xaaaaaa, // Element.Metal,
+		0xffff00, // Element.Electricity,
+		0x224488, // Element.Shadow,
+		0xffaa44, // Element.Light,
+		0x00aa55, // Element.Life,
+	];
+	
+	private static var elementAssets = [
+		AssetPaths.gem_fire__png, // Element.Fire,
+		AssetPaths.gem_water__png, // Element.Water,
+		AssetPaths.gem_earth__png, // Element.Earth,
+		AssetPaths.gem_wind__png, // Element.Wind,
+		AssetPaths.gem_ice__png, // Element.Ice,
+		AssetPaths.gem_metal__png, // Element.Metal,
+		AssetPaths.gem_electricity__png, // Element.Electricity,
+		AssetPaths.gem_shadow__png, // Element.Shadow,
+		AssetPaths.gem_light__png, // Element.Light,
+		AssetPaths.gem_life__png, // Element.Life,
+	];
+
 	private var elementAccess = new Map<Element, Bool>();
 
-	public var clockSprite:FlxSprite;
+	public var clockSprite:CenterableEntity;
 
 	public var primary:Element = Element.None;
 	public var primaryAngle:Float = 0.0;
-	public var primarySprite:FlxSprite;
+	public var primarySprite:CenterableEntity;
 
 	public var secondary:Element = Element.None;
 	public var secondaryAngle:Float = 0.0;
-	public var secondarySprite:FlxSprite;
+	public var secondarySprite:CenterableEntity;
 
 	public var gems:Map<Element, ClockGem> = new Map<Element, ClockGem>();
 
@@ -52,27 +92,33 @@ class SummonerClock extends FlxSpriteGroup {
 		y = originalY - animYOffset;
 		alpha = 0;
 
-		clockSprite = new FlxSprite(0, 0, AssetPaths.clock__png);
+		clockSprite = new CenterableEntity(0, 0, AssetPaths.clock__png);
 		add(clockSprite);
-		primarySprite = new FlxSprite(0, 0, AssetPaths.primary_hand__png);
-		add(primarySprite);
-		secondarySprite = new FlxSprite(0, 0, AssetPaths.secondary_hand__png);
-		add(secondarySprite);
+		primarySprite = new CenterableEntity(0, 0, AssetPaths.primary_hand__png);
+		secondarySprite = new CenterableEntity(0, 0, AssetPaths.secondary_hand__png);
 
+
+		var v = FlxPoint.get(0, -1);
 		for (i in 0...elementOrderList.length) {
 			var element = elementOrderList[i];
-			var x = 0 + (i * 10);
-			var y = 0;
-			var glow = new ClockGemGlow(x, y);
-			glow.visible = false;
+			var x = v.x * 100 * elementOffset[i];
+			var y = v.y * 100 * elementOffset[i];
+			var color = elementColor[i];
+			var glow = new ClockGemGlow(x, y, color, AssetPaths.gem_glow__png);
 			add(glow);
-			var gem = new ClockGem(x, y, glow);
+			var gem = new ClockGem(x, y, glow, elementAssets[i]);
 			gem.visible = false;
 			add(gem);
 			gems.set(element, gem);
+			v.rotateByDegrees(360 / 10.0);
 		}
 
+		add(primarySprite);
+		add(secondarySprite);
 		this.scale.set(2, 2);
+
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(SummonerClock, ["primary", "secondary"]));
+		FlxG.debugger.track(this, "Clock");
 	}
 
 	override function update(elapsed:Float) {
@@ -121,7 +167,8 @@ class SummonerClock extends FlxSpriteGroup {
 		elementAccess.set(element, true);
 
 		if (gems.exists(element)) {
-			gems.get(element).visible = true;
+			var g = gems.get(element);
+			g.visible = true;
 		}
 	}
 
@@ -138,6 +185,12 @@ class SummonerClock extends FlxSpriteGroup {
 			return Element.None;
 		}
 		return element;
+	}
+
+	public function hideGlow(e:Element) {
+		if (gems.exists(e)) {
+			gems.get(e).glow.hide();
+		}
 	}
 
 	public function getIndex(angle:Float):Int {

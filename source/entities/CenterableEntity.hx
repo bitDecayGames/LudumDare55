@@ -3,6 +3,7 @@ package entities;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
+import shaders.OutlineShader;
 
 class CenterableEntity extends FlxSprite {
 
@@ -14,6 +15,7 @@ class CenterableEntity extends FlxSprite {
 		super.graphicLoaded();
 		x -= width * .5;
 		y -= height * .5;
+		shader = new OutlineShader();
 	}
 
 	public function center():FlxPoint {

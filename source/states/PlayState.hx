@@ -13,6 +13,7 @@ import entities.Player;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import bitdecay.flixel.debug.DebugDraw;
+import elements.Element;
 
 using states.FlxStateExt;
 
@@ -28,12 +29,16 @@ class PlayState extends FlxTransitionableState {
 		FlxG.camera.pixelPerfectRender = true;
 
 		projectileGroup = new FlxSpriteGroup();
-		clock = new SummonerClock(250, 100);
+		clock = new SummonerClock(FlxG.width / 2, FlxG.height / 2);
 		player = new Player(200, 200, clock, projectileGroup);
+		for (element in SummonerClock.elementOrderList) {
+			clock.addElement(element);
+		}
 		 
-		add(clock);
 		add(player);
 		add(projectileGroup);
+
+		add(clock);
 
 		//add(Achievements.ACHIEVEMENT_NAME_HERE.toToast(true, true));
 

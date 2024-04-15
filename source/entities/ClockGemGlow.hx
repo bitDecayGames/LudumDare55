@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import loaders.Aseprite;
@@ -10,9 +11,10 @@ class ClockGemGlow extends CenterableEntity {
 	private var showTween:FlxTween;
 	private var hideTween:FlxTween;
 	private var animDur:Float = 0.2;
-	public function new(x:Float, y:Float) {
-		super(x, y, AssetPaths.gem_glow__png);
-		alpha = 0.0;
+	public function new(x:Float, y:Float, color:FlxColor, assetPath:String) {
+		super(x, y-10, AssetPaths.gem__png);
+		alpha = 1.0;
+		visible = true;
 	}
 
 	public function show() {
@@ -20,9 +22,7 @@ class ClockGemGlow extends CenterableEntity {
 			hideTween.cancel();
 			hideTween = null;
 		}
-		if (showTween == null) {
-			showTween = FlxTween.num(1, 0, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn}, tweenFunction.bind(this));
-		}
+		//showTween = FlxTween.num(1, 0, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn}, tweenFunction.bind(this));
 	}
 	
 	public function hide() {
@@ -30,9 +30,7 @@ class ClockGemGlow extends CenterableEntity {
 			showTween.cancel();
 			showTween = null;
 		}
-		if (hideTween == null) {
-			hideTween = FlxTween.num(0, 1, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn}, tweenFunction.bind(this));
-		}
+		//hideTween = FlxTween.num(0, 1, animDur, {type: FlxTweenType.PERSIST, ease: FlxEase.expoIn}, tweenFunction.bind(this));
 	}
 
 	function tweenFunction(s:FlxSprite, v:Float) {

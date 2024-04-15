@@ -37,10 +37,10 @@ class OutlineShader extends flixel.system.FlxAssets.FlxShader {
                 float h = iSize.y / iResolution.y;
 
                 // check if left/right/up/down pixel is non-transparent, if so, draw an outline at this location
-                if (texture2D(bitmap, vec2(openfl_TextureCoordv.x + w, openfl_TextureCoordv.y)).a != 0.
+                if (iSample.a != 1.0 && (texture2D(bitmap, vec2(openfl_TextureCoordv.x + w, openfl_TextureCoordv.y)).a != 0.
                     || texture2D(bitmap, vec2(openfl_TextureCoordv.x - w, openfl_TextureCoordv.y)).a != 0.
                     || texture2D(bitmap, vec2(openfl_TextureCoordv.x, openfl_TextureCoordv.y + h)).a != 0.
-                    || texture2D(bitmap, vec2(openfl_TextureCoordv.x, openfl_TextureCoordv.y - h)).a != 0.) {
+                    || texture2D(bitmap, vec2(openfl_TextureCoordv.x, openfl_TextureCoordv.y - h)).a != 0.)) {
                     iSample = iColor;
                 }
             }
@@ -61,15 +61,27 @@ class OutlineShader extends flixel.system.FlxAssets.FlxShader {
         enabled = v;
         this.iEnabled.value = [enabled];
     }
+    
+    public function getEnabled():Bool {
+        return enabled;
+    }
 
     public function setWidth(v:Int) {
         width = v;
         this.iSize.value = [width, height];
     }
+    
+    public function getWidth():Int {
+        return width;
+    }
 
     public function setHeight(v:Int) {
         height = v;
         this.iSize.value = [width, height];
+    }
+
+    public function getHeight():Int {
+        return height;
     }
 
     public function setSize(width:Int, height:Int) {
