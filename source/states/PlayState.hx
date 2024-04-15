@@ -1,5 +1,7 @@
 package states;
 
+import entities.Projectile;
+import entities.BaseEnemy;
 import entities.enemies.SmallGoblinEnemy;
 import flixel.group.FlxSpriteGroup;
 import entities.SummonerClock;
@@ -22,6 +24,7 @@ class PlayState extends FlxTransitionableState {
 	var player:Player;
 	var clock:SummonerClock;
 	var projectileGroup:FlxSpriteGroup;
+	var enemyProjectileGroup:FlxSpriteGroup;
 	var enemyGroup:FlxSpriteGroup;
 
 	override public function create() {
@@ -32,6 +35,7 @@ class PlayState extends FlxTransitionableState {
 		FlxG.camera.pixelPerfectRender = true;
 
 		projectileGroup = new FlxSpriteGroup();
+		enemyProjectileGroup = new FlxSpriteGroup();
 		enemyGroup = new FlxSpriteGroup();
 
 		clock = new SummonerClock(FlxG.width / 2, FlxG.height / 2);
@@ -43,14 +47,15 @@ class PlayState extends FlxTransitionableState {
 		var x = 100;
 		var y = 200;
 		for (i in 0...10) {
-			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y, player, projectileGroup, enemyGroup));
-			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y + 30, player, projectileGroup, enemyGroup));
-			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y + 60, player, projectileGroup, enemyGroup));
+			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y, player, enemyProjectileGroup, enemyGroup));
+			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y + 30, player, enemyProjectileGroup, enemyGroup));
+			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y + 60, player, enemyProjectileGroup, enemyGroup));
 		}
 		 
 		add(player);
 		add(enemyGroup);
 		add(projectileGroup);
+		add(enemyProjectileGroup);
 		add(clock);
 
 		//add(Achievements.ACHIEVEMENT_NAME_HERE.toToast(true, true));
@@ -64,6 +69,22 @@ class PlayState extends FlxTransitionableState {
 
 		var cam = FlxG.camera;
 		DebugDraw.ME.drawCameraRect(cam.getCenterPoint().x - 5, cam.getCenterPoint().y - 5, 10, 10, DebugLayers.RAYCAST, FlxColor.RED);
+
+		FlxG.collide(projectileGroup, enemyGroup, (projectile, enemy) -> {
+			collideProjectileToEnemy(cast projectile, cast enemy);
+		});
+		FlxG.collide(projectileGroup, player, (projectile, player) -> {
+			collideProjectileToPlayer(cast projectile, cast player);
+		});
+
+	}
+
+	public function collideProjectileToEnemy(p:Projectile, e:BaseEnemy) {
+		p.hit(e);
+	}
+	
+	public function collideProjectileToPlayer(p:Projectile, player:Player) {
+		p.hit(player);
 	}
 
 	override public function onFocusLost() {
