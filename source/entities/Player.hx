@@ -25,7 +25,7 @@ class Player extends BaseEntity {
 		super(X, Y);
 		loadGraphic(AssetPaths.guy__png);
 
-		speed = 2000;
+		speed = 180;
 		maxSpeed = speed*2;
 		naturalSpeed = speed;
 		turnSpeed = 10;

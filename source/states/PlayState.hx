@@ -42,8 +42,10 @@ class PlayState extends FlxTransitionableState {
 
 		var x = 100;
 		var y = 200;
-		for (i in 0...30) {
+		for (i in 0...10) {
 			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y, player, projectileGroup, enemyGroup));
+			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y + 30, player, projectileGroup, enemyGroup));
+			enemyGroup.add(new SmallGoblinEnemy(x + i * 30, y + 60, player, projectileGroup, enemyGroup));
 		}
 		 
 		add(player);

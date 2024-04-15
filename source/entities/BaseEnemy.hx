@@ -23,8 +23,8 @@ class BaseEnemy extends BaseEntity {
 		this.player = player;
 		this.projectileGroup = projectileGroup;
 		this.enemyGroup = enemyGroup;
-		FlxG.debugger.addTrackerProfile(new TrackerProfile(BaseEnemy, ["speed", "velocity.length", "effects", "stateMachine"]));
-		FlxG.debugger.track(this, "Enemy");
+		// FlxG.debugger.addTrackerProfile(new TrackerProfile(BaseEnemy, ["speed", "velocity", "effects", "stateMachine"]));
+		// FlxG.debugger.track(this, "Enemy");
 
 	}
 

@@ -55,7 +55,6 @@ class BaseEntity extends CenterableEntity {
 
 	public function new(?X:Float = 0, ?Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset) {
 		super(X, Y, SimpleGraphic);
-		maxVelocity.set(100, 100);
 		id = EntityIdManager.instance.get();
 		effects = new StatusEffects(this);
 		stateMachine = new StateMachine(this);
@@ -78,6 +77,7 @@ class BaseEntity extends CenterableEntity {
 		facingDegrees %= 360;
 
 		// Movement
+		maxVelocity.set(maxSpeed, maxSpeed);
 		if (speed > maxSpeed) {
 			speed = maxSpeed;
 		} else if (speed < 0) {
@@ -88,10 +88,17 @@ class BaseEntity extends CenterableEntity {
 		drag.set(friction, friction);
 
 		// Movement Animation
-		// var sin = Math.sin((FlxG.game.ticks + zRandomStart) * 0.02);
-		// z = sin * velocity.length * 0.05;
-		// offset.set(0, z);
-		// angle = sin * velocity.length * 0.1;
+		if (velocity.length > 0) {
+			var sin = Math.sin((FlxG.game.ticks + zRandomStart) * 0.02);
+			z = sin * 3;
+			offset.set(0, z);
+			sin = Math.sin((FlxG.game.ticks + zRandomStart) * 0.01);
+			angle = sin * 10;
+		} else {
+			z = 0;
+			offset.set(0, z);
+			angle = 0;
+		}
 
 	}
 
@@ -114,6 +121,6 @@ class BaseEntity extends CenterableEntity {
 		if (dir.length > 1.0) {
 			dir.normalize();
 		}
-		acceleration.set(dir.x*speed, dir.y*speed);
+		velocity.set(dir.x*speed, dir.y*speed);
 	}
 }

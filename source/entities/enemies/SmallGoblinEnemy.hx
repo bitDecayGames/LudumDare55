@@ -10,8 +10,8 @@ class SmallGoblinEnemy extends BaseEnemy {
 
 		maxHealth = 10;
 		health = maxHealth;
-		speed = 500;
-		maxSpeed = 1500;
+		speed = 50;
+		maxSpeed = speed * 2;
 		naturalSpeed = speed;
 		friction = 1000;
 		sturdiness = 10;
