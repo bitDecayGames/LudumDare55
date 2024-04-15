@@ -1,5 +1,6 @@
 package states;
 
+import entities.enemies.SmallGoblinEnemy;
 import flixel.group.FlxSpriteGroup;
 import entities.SummonerClock;
 import entities.BaseEntity;
@@ -18,9 +19,10 @@ import elements.Element;
 using states.FlxStateExt;
 
 class PlayState extends FlxTransitionableState {
-	var player:BaseEntity;
+	var player:Player;
 	var clock:SummonerClock;
 	var projectileGroup:FlxSpriteGroup;
+	var enemyGroup:FlxSpriteGroup;
 
 	override public function create() {
 		super.create();
@@ -29,13 +31,24 @@ class PlayState extends FlxTransitionableState {
 		FlxG.camera.pixelPerfectRender = true;
 
 		projectileGroup = new FlxSpriteGroup();
+		enemyGroup = new FlxSpriteGroup();
+
 		clock = new SummonerClock(FlxG.width / 2, FlxG.height / 2);
-		player = new Player(200, 200, clock, projectileGroup);
+		player = new Player(FlxG.width/2, FlxG.height/2, clock, projectileGroup);
 		for (element in SummonerClock.elementOrderList) {
 			clock.addElement(element);
 		}
+
+		var x = 100;
+		var y = 200;
+		for (i in 0...10) {
+			add(new SmallGoblinEnemy(x + i * 30, y, player, projectileGroup));
+		}
 		 
 		add(player);
+
+		add(enemyGroup);
+
 		add(projectileGroup);
 
 		add(clock);
