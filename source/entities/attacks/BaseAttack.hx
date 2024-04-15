@@ -17,6 +17,7 @@ class BaseAttack {
 	private var _chargeTime:Float = 0.0;
 	public var cooldown:Float = 1.0;
 	private var _cooldown:Float = 0.0;
+	public var started:Bool = false;
 
 	public function new(group:FlxSpriteGroup, potency:Float, damageType:Element, cooldown:Float, chargeTime:Float = 0.01) {
 		this.group = group;
@@ -34,18 +35,17 @@ class BaseAttack {
 			this.attackDirection = direction;
 			_chargeTime = chargeTime;
 			ready = false;
-			trace("triggered attack");
 		}
 	}
 
 	private function start() {
-		trace("start attack");
+		started = true;
 	}
 
 	public function stop() {
+		started = false;
 		if (_chargeTime <= 0) {
 			_cooldown = cooldown;
-			trace("stopped attack, starting cooldown");
 		} else {
 			// they canceled during charging, don't make them wait for cooldown again
 			_cooldown = 0;
@@ -57,15 +57,12 @@ class BaseAttack {
 		if (_cooldown > 0) {
 			_cooldown -= elapsed;
 			if (_cooldown <= 0) {
-				trace("cooldown is finished");
 				ready = true;
 			}
 		}
 		if (_chargeTime > 0) {
-			trace("charging");
 			_chargeTime -= elapsed;
 			if (_chargeTime <= 0) {
-				trace("charged");
 				start();
 			}
 		}
